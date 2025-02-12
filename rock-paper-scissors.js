@@ -1,3 +1,8 @@
+// Global
+
+let humanScore = 0;
+let computerScore = 0;
+
 /*
 getComputerChoice
 
@@ -53,8 +58,60 @@ function getHumanChoice() {
     }   
 }
 
-let test = getHumanChoice();
+/*
+playRound
 
-console.log("Human Choice:  " + test);
+given a humanChoice and a computerChoice, plays a single round between the user and the computer and announces a winner.
 
-console.log("Computer Choice: " + getComputerChoice());
+compare humanChoice and computerChoice
+if humanChoice is winner, declare human winner
+if computerChoice is winner, declare computer winner
+if draw, declare a draw.
+*/
+
+function playRound(humanChoice, computerChoice) {
+
+    console.log("You chose: " + humanChoice + "\nThe computer chose: " + computerChoice)
+    switch(humanChoice){
+        case "Rock":
+            if (computerChoice == "Rock") {
+                console.log("Draw! No points awarded.");
+            } else if (computerChoice == "Paper") {
+                console.log("You lose! Computer gets a point!");
+                computerScore++;
+            } else if (computerChoice == "Scissors") {
+                console.log("You win! You get a point!");
+                humanScore++;
+            }
+            break;
+        
+        case "Paper":
+            if (computerChoice == "Rock") {
+                console.log("You win! You get a point!");
+                humanScore++;
+            } else if (computerChoice == "Paper") {
+                console.log("Draw! No points awarded.");
+            } else if (computerChoice == "Scissors") {
+                console.log("You lose! Computer gets a point!");
+                computerScore++;
+            }
+            break;
+
+        case "Scissors":
+            if (computerChoice == "Rock") {
+                console.log("You lose! Computer gets a point!");
+                computerScore++;
+            } else if (computerChoice == "Paper") {
+                console.log("You win! You get a point!");
+                humanScore++;
+            } else if (computerChoice == "Scissors") {
+                console.log("Draw! No points awarded.");
+            }
+            break;
+    }
+}
+
+const humanChoice = getHumanChoice();
+const computerChoice = getComputerChoice();
+
+playRound(humanChoice, computerChoice);
