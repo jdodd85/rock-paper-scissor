@@ -1,8 +1,3 @@
-// Global
-
-let humanScore = 0;
-let computerScore = 0;
-
 /*
 getComputerChoice
 
@@ -76,42 +71,85 @@ function playRound(humanChoice, computerChoice) {
         case "Rock":
             if (computerChoice == "Rock") {
                 console.log("Draw! No points awarded.");
+                return (0);
             } else if (computerChoice == "Paper") {
                 console.log("You lose! Computer gets a point!");
-                computerScore++;
+                return (-1);
             } else if (computerChoice == "Scissors") {
                 console.log("You win! You get a point!");
-                humanScore++;
+                return (1);
             }
             break;
         
         case "Paper":
             if (computerChoice == "Rock") {
                 console.log("You win! You get a point!");
-                humanScore++;
+                return (1);
             } else if (computerChoice == "Paper") {
                 console.log("Draw! No points awarded.");
+                return (0);
             } else if (computerChoice == "Scissors") {
                 console.log("You lose! Computer gets a point!");
-                computerScore++;
+                return (-1);
             }
             break;
 
         case "Scissors":
             if (computerChoice == "Rock") {
                 console.log("You lose! Computer gets a point!");
-                computerScore++;
+                return (-1);
             } else if (computerChoice == "Paper") {
                 console.log("You win! You get a point!");
-                humanScore++;
+                return (1);
             } else if (computerChoice == "Scissors") {
                 console.log("Draw! No points awarded.");
+                return (0);
             }
             break;
     }
 }
 
-const humanChoice = getHumanChoice();
-const computerChoice = getComputerChoice();
+/*
+playGame
 
-playRound(humanChoice, computerChoice);
+plays 5 rounds of rock paper scissors and declares a winner.
+
+declare scores
+play round
+track score
+repeat four more times
+compare scores
+declare winner
+*/
+
+function playGame() {
+    let humanScore = 0;
+    let computerScore = 0;
+
+    for (let i = 0; i < 5; i++) {
+        switch (playRound(getHumanChoice(), getComputerChoice())) {
+            case 1:
+                humanScore++;
+                break;
+
+            case -1:
+                computerScore++;
+                break;
+
+            case 0:
+                break;
+        }
+        
+        console.log("The Score is: \nYou: " + humanScore +"\nComputer: " + computerScore);
+    }
+    
+    if (humanScore > computerScore) {
+        console.log("You win!");
+    } else if (computerScore > humanScore) {
+        console.log("The Computer wins!");
+    } else {
+        console.log("It's a tie!");
+    }
+}
+
+playGame();
