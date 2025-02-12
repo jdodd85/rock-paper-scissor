@@ -2,6 +2,10 @@
 getComputerChoice
 
 Given no parameters, will return a random selection from Rock, Paper, or Scissors
+
+pick a random number
+assign that number to a value
+return the value.
 */
 
 function getComputerChoice() {
@@ -19,17 +23,39 @@ function getComputerChoice() {
     return(selection);
 }
 
+/*
+getHumanChoice
+
+Given no parameters, will prompt the user for a choice and return that.
+
+prompt user for input
+make sure selection is valid
+if selection is valid, return it.
+*/
 function getHumanChoice() {
     let selection = prompt("Please choose Rock, Paper, or Scissors");
 
-    if (selection.toLowerCase != "rock" || selection.toLowerCase != "paper" || selection.toLowerCase != "scissors") {
-        selection = prompt("Error:  Not a valid choice! Please choose from Rock, Paper, or Scissors.");
-    }
+    switch(selection.toLowerCase()) {
+        case "rock":
+            return("Rock");
+        
+        case "paper":
+            return("Paper");
 
-    return(selection);
+        case "scissors":
+            return("Scissors");
+
+        default:
+            console.log("Please select from Rock, Paper, or Scissors");
+    }
+    return("error");
 }
 
 let test = getHumanChoice();
+
+while (test == "error") {
+    test = getHumanChoice();
+}
 
 console.log("Human Choice:  " + test);
 
