@@ -33,29 +33,27 @@ make sure selection is valid
 if selection is valid, return it.
 */
 function getHumanChoice() {
-    let selection = prompt("Please choose Rock, Paper, or Scissors");
+    let selection = "";
 
-    switch(selection.toLowerCase()) {
-        case "rock":
-            return("Rock");
-        
-        case "paper":
-            return("Paper");
+    while (selection != "error") {
+        switch(selection.toLowerCase()) {
+            case "rock":
+                return("Rock");
+            
+            case "paper":
+                return("Paper");
 
-        case "scissors":
-            return("Scissors");
+            case "scissors":
+                return("Scissors");
 
-        default:
-            console.log("Please select from Rock, Paper, or Scissors");
-    }
-    return("error");
+            default:
+                selection = prompt("Please select from Rock, Paper, or Scissors");
+                
+        }
+    }   
 }
 
 let test = getHumanChoice();
-
-while (test == "error") {
-    test = getHumanChoice();
-}
 
 console.log("Human Choice:  " + test);
 
