@@ -1,3 +1,13 @@
+// Global Values
+
+const WINS = new Map([
+  ["Rock", "Scissors"],
+  ["Paper", "Rock"],
+  ["Scissors", "Paper"],
+]);
+
+const ROUNDS = 5;
+
 /*
 getComputerChoice
 
@@ -9,18 +19,18 @@ return the value.
 */
 
 function getComputerChoice() {
-    let num = Math.random();
-    let selection;
+  let num = Math.random();
+  let selection;
 
-    if (num <= 0.333) {
-        selection = "Rock";
-    } else if (num > 0.333 && num <= 0.666) {
-        selection = "Paper";
-    } else {
-        selection = "Scissors";
-    }
+  if (num <= 0.333) {
+    selection = "Rock";
+  } else if (num > 0.333 && num <= 0.666) {
+    selection = "Paper";
+  } else {
+    selection = "Scissors";
+  }
 
-    return(selection);
+  return selection;
 }
 
 /*
@@ -33,24 +43,23 @@ make sure selection is valid
 if selection is valid, return it.
 */
 function getHumanChoice() {
-    let selection = "";
+  let selection = "";
 
-    while (selection != "error") {
-        switch(selection.toLowerCase()) {
-            case "rock":
-                return("Rock");
-            
-            case "paper":
-                return("Paper");
+  while (selection != "error") {
+    switch (selection.toLowerCase()) {
+      case "rock":
+        return "Rock";
 
-            case "scissors":
-                return("Scissors");
+      case "paper":
+        return "Paper";
 
-            default:
-                selection = prompt("Please select from Rock, Paper, or Scissors");
-                
-        }
-    }   
+      case "scissors":
+        return "Scissors";
+
+      default:
+        selection = prompt("Please select from Rock, Paper, or Scissors");
+    }
+  }
 }
 
 /*
@@ -65,54 +74,26 @@ if draw, declare a draw.
 */
 
 function playRound(humanChoice, computerChoice) {
+  console.log(
+    "You chose: " + humanChoice + "\nThe computer chose: " + computerChoice
+  );
 
-    console.log("You chose: " + humanChoice + "\nThe computer chose: " + computerChoice)
-    switch(humanChoice){
-        case "Rock":
-            if (computerChoice == "Rock") {
-                console.log("Draw! No points awarded.");
-                return (0);
-            } else if (computerChoice == "Paper") {
-                console.log("You lose! Computer gets a point!");
-                return (-1);
-            } else if (computerChoice == "Scissors") {
-                console.log("You win! You get a point!");
-                return (1);
-            }
-            break;
-        
-        case "Paper":
-            if (computerChoice == "Rock") {
-                console.log("You win! You get a point!");
-                return (1);
-            } else if (computerChoice == "Paper") {
-                console.log("Draw! No points awarded.");
-                return (0);
-            } else if (computerChoice == "Scissors") {
-                console.log("You lose! Computer gets a point!");
-                return (-1);
-            }
-            break;
-
-        case "Scissors":
-            if (computerChoice == "Rock") {
-                console.log("You lose! Computer gets a point!");
-                return (-1);
-            } else if (computerChoice == "Paper") {
-                console.log("You win! You get a point!");
-                return (1);
-            } else if (computerChoice == "Scissors") {
-                console.log("Draw! No points awarded.");
-                return (0);
-            }
-            break;
-    }
+  if (WINS.get(humanChoice) == computerChoice) {
+    console.log("You win! You get a point!");
+    return 1;
+  } else if (WINS.get(computerChoice) == humanChoice) {
+    console.log("You lose! Computer gets a point!");
+    return -1;
+  } else {
+    console.log("Draw! No points awarded.");
+    return 0;
+  }
 }
 
 /*
 playGame
 
-plays 5 rounds of rock paper scissors and declares a winner.
+plays 5 ROUNDS of rock paper scissors and declares a winner.
 
 declare scores
 play round
@@ -123,33 +104,35 @@ declare winner
 */
 
 function playGame() {
-    let humanScore = 0;
-    let computerScore = 0;
+  let humanScore = 0;
+  let computerScore = 0;
 
-    for (let i = 0; i < 5; i++) {
-        switch (playRound(getHumanChoice(), getComputerChoice())) {
-            case 1:
-                humanScore++;
-                break;
+  for (let i = 0; i < ROUNDS; i++) {
+    switch (playRound(getHumanChoice(), getComputerChoice())) {
+      case 1:
+        humanScore++;
+        break;
 
-            case -1:
-                computerScore++;
-                break;
+      case -1:
+        computerScore++;
+        break;
 
-            case 0:
-                break;
-        }
-        
-        console.log("The Score is: \nYou: " + humanScore +"\nComputer: " + computerScore);
+      case 0:
+        break;
     }
-    
-    if (humanScore > computerScore) {
-        console.log("You win!");
-    } else if (computerScore > humanScore) {
-        console.log("The Computer wins!");
-    } else {
-        console.log("It's a tie!");
-    }
+
+    console.log(
+      "The Score is: \nYou: " + humanScore + "\nComputer: " + computerScore
+    );
+  }
+
+  if (humanScore > computerScore) {
+    console.log("You win!");
+  } else if (computerScore > humanScore) {
+    console.log("The Computer WINS!");
+  } else {
+    console.log("It's a tie!");
+  }
 }
 
 playGame();
