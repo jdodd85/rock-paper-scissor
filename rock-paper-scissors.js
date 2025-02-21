@@ -90,49 +90,52 @@ function playRound(humanChoice, computerChoice) {
   }
 }
 
+function updateScoreboard(humanScore, computerScore) {
+  const humanScoreboard = document.querySelector(".humanScoreboard");
+  const computerScoreboard = document.querySelector(".computerScoreboard");
+
+  humanScoreboard.textContent = "Player Score: " + humanScore;
+  computerScoreboard.textContent = "Computer Score: " + computerScore;
+}
 /*
 playGame
 
-plays 5 ROUNDS of rock paper scissors and declares a winner.
+Create three buttons, one for each selection. Add an event listener to the 
+buttons that call your playRound function with the correct playerSelection 
+every time a button is clicked. (you can keep the console.logs for this step)
 
-declare scores
-play round
-track score
-repeat four more times
-compare scores
-declare winner
+Add a div for displaying results and change all of your console.logs into DOM
+methods.
+
+Display the running score, and announce a winner of the game once one player 
+reaches 5 points.
 */
 
 function playGame() {
+  const buttons = document.querySelectorAll("button");
+
   let humanScore = 0;
   let computerScore = 0;
 
-  for (let i = 0; i < ROUNDS; i++) {
-    switch (playRound(getHumanChoice(), getComputerChoice())) {
-      case 1:
-        humanScore++;
-        break;
+  buttons.forEach((button) => {
+    button.addEventListener("click", () => {
+      console.log(button.value);
+      switch (playRound(button.value, getComputerChoice())) {
+        case 1:
+          humanScore++;
+          updateScoreboard(humanScore, computerScore);
+          break;
 
-      case -1:
-        computerScore++;
-        break;
+        case -1:
+          computerScore++;
+          updateScoreboard(humanScore, computerScore);
+          break;
 
-      case 0:
-        break;
-    }
-
-    console.log(
-      "The Score is: \nYou: " + humanScore + "\nComputer: " + computerScore
-    );
-  }
-
-  if (humanScore > computerScore) {
-    console.log("You win!");
-  } else if (computerScore > humanScore) {
-    console.log("The Computer WINS!");
-  } else {
-    console.log("It's a tie!");
-  }
+        case 0:
+          break;
+      }
+    });
+  });
 }
 
 playGame();
