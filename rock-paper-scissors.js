@@ -7,6 +7,14 @@ const WINS = new Map([
 ]);
 
 const ROUNDS = 5;
+const gmMessage = document.querySelector(".gm");
+const roundWinner = document.querySelector(".roundWinner");
+const humanScoreboard = document.querySelector(".humanScoreboard");
+const computerScoreboard = document.querySelector(".computerScoreboard");
+const buttons = document.querySelectorAll("button");
+
+let humanScore = 0;
+let computerScore = 0;
 
 /*
 getComputerChoice
@@ -33,34 +41,7 @@ function getComputerChoice() {
   return selection;
 }
 
-/*
-getHumanChoice
-
-Given no parameters, will prompt the user for a choice and return that.
-
-prompt user for input
-make sure selection is valid
-if selection is valid, return it.
-*/
-function getHumanChoice() {
-  let selection = "";
-
-  while (selection != "error") {
-    switch (selection.toLowerCase()) {
-      case "rock":
-        return "Rock";
-
-      case "paper":
-        return "Paper";
-
-      case "scissors":
-        return "Scissors";
-
-      default:
-        selection = prompt("Please select from Rock, Paper, or Scissors");
-    }
-  }
-}
+function declareRoundWinner(humanChoice, computerChoice) {}
 
 /*
 playRound
@@ -74,28 +55,34 @@ if draw, declare a draw.
 */
 
 function playRound(humanChoice, computerChoice) {
-  console.log(
-    "You chose: " + humanChoice + "\nThe computer chose: " + computerChoice
-  );
+  gmMessage.textContent =
+    "You chose: " + humanChoice + "\nThe computer chose: " + computerChoice;
 
   if (WINS.get(humanChoice) == computerChoice) {
-    console.log("You win! You get a point!");
+    roundWinner.textContent = "You win! You get a point!";
     return 1;
   } else if (WINS.get(computerChoice) == humanChoice) {
-    console.log("You lose! Computer gets a point!");
+    roundWinner.textContent = "You lose! Computer gets a point!";
     return -1;
   } else {
-    console.log("Draw! No points awarded.");
+    roundWinner.textContent = "Draw! No points awarded.";
     return 0;
   }
 }
 
 function updateScoreboard(humanScore, computerScore) {
-  const humanScoreboard = document.querySelector(".humanScoreboard");
-  const computerScoreboard = document.querySelector(".computerScoreboard");
-
   humanScoreboard.textContent = "Player Score: " + humanScore;
   computerScoreboard.textContent = "Computer Score: " + computerScore;
+
+  if (humanScore > 4) {
+    gmMessage.textContent = "You win the game!";
+    return true;
+  } else if (computerScore > 4) {
+    gmMessage.textContent = "The computer wins the game!";
+    return true;
+  } else {
+    return false;
+  }
 }
 /*
 playGame
@@ -112,23 +99,22 @@ reaches 5 points.
 */
 
 function playGame() {
-  const buttons = document.querySelectorAll("button");
-
-  let humanScore = 0;
-  let computerScore = 0;
-
   buttons.forEach((button) => {
     button.addEventListener("click", () => {
       console.log(button.value);
       switch (playRound(button.value, getComputerChoice())) {
         case 1:
           humanScore++;
-          updateScoreboard(humanScore, computerScore);
+          if (updateScoreboard(humanScore, computerScore)) {
+            return;
+          }
           break;
 
         case -1:
           computerScore++;
-          updateScoreboard(humanScore, computerScore);
+          if (updateScoreboard(humanScore, computerScore)) {
+            return;
+          }
           break;
 
         case 0:
