@@ -1,127 +1,64 @@
-// Global Values
-
+const ROUNDS = 5;
 const WINS = new Map([
   ["Rock", "Scissors"],
   ["Paper", "Rock"],
   ["Scissors", "Paper"],
 ]);
 
-const ROUNDS = 5;
+const buttons = document.querySelectorAll("button");
 const gmMessage = document.querySelector(".gm");
 const roundWinner = document.querySelector(".roundWinner");
 const humanScoreboard = document.querySelector(".humanScoreboard");
 const computerScoreboard = document.querySelector(".computerScoreboard");
-const buttons = document.querySelectorAll("button");
 
 let humanScore = 0;
 let computerScore = 0;
 
-/*
-getComputerChoice
+buttons.forEach((button) => {
+  button.addEventListener("click", function () {
+    playRound(button.value);
+  });
+});
 
-Given no parameters, will return a random selection from Rock, Paper, or Scissors
+function playRound(userChoice) {
+  const computerChoice = getComputerChoice();
 
-pick a random number
-assign that number to a value
-return the value.
-*/
+  gmMessage.textContent = userChoice + " Vs. " + computerChoice;
+
+  if (WINS.get(userChoice) == computerChoice) {
+    roundWinner.textContent = "You win!";
+    humanScore++;
+  } else if (WINS.get(computerChoice) == userChoice) {
+    roundWinner.textContent = "Computer wins!";
+    computerScore++;
+  } else {
+    roundWinner.textContent = "Draw!";
+  }
+  updateScoreboard();
+  roundCounter++;
+}
 
 function getComputerChoice() {
-  let num = Math.random();
-  let selection;
-
-  if (num <= 0.333) {
-    selection = "Rock";
-  } else if (num > 0.333 && num <= 0.666) {
-    selection = "Paper";
-  } else {
-    selection = "Scissors";
-  }
-
-  return selection;
+  const choices = Array.from(WINS);
+  const ranIndex = Math.floor(Math.random() * choices.length);
+  return choices[ranIndex][0];
 }
 
-function declareRoundWinner(humanChoice, computerChoice) {}
-
-/*
-playRound
-
-given a humanChoice and a computerChoice, plays a single round between the user and the computer and announces a winner.
-
-compare humanChoice and computerChoice
-if humanChoice is winner, declare human winner
-if computerChoice is winner, declare computer winner
-if draw, declare a draw.
-*/
-
-function playRound(humanChoice, computerChoice) {
-  gmMessage.textContent =
-    "You chose: " + humanChoice + "\nThe computer chose: " + computerChoice;
-
-  if (WINS.get(humanChoice) == computerChoice) {
-    roundWinner.textContent = "You win! You get a point!";
-    return 1;
-  } else if (WINS.get(computerChoice) == humanChoice) {
-    roundWinner.textContent = "You lose! Computer gets a point!";
-    return -1;
-  } else {
-    roundWinner.textContent = "Draw! No points awarded.";
-    return 0;
-  }
-}
-
-function updateScoreboard(humanScore, computerScore) {
+function updateScoreboard() {
   humanScoreboard.textContent = "Player Score: " + humanScore;
   computerScoreboard.textContent = "Computer Score: " + computerScore;
 
-  if (humanScore > 4) {
-    gmMessage.textContent = "You win the game!";
-    return true;
-  } else if (computerScore > 4) {
-    gmMessage.textContent = "The computer wins the game!";
-    return true;
-  } else {
-    return false;
+  if (humanScore >= 5 || computerScore >= 5) {
+    buttons.forEach((button) => {
+      button.disabled = true;
+    });
+    if (humanScore > computerScore) {
+      gmMessage.textContent = "You win the game!";
+    } else if (computerScore > humanScore) {
+      gmMessage.textContent = "You lose. Better luck next time!";
+    } else {
+      gmMessage.textContent =
+        "Sorry, something went wrong. Refresh and try again.";
+    }
   }
 }
-/*
-playGame
-
-Create three buttons, one for each selection. Add an event listener to the 
-buttons that call your playRound function with the correct playerSelection 
-every time a button is clicked. (you can keep the console.logs for this step)
-
-Add a div for displaying results and change all of your console.logs into DOM
-methods.
-
-Display the running score, and announce a winner of the game once one player 
-reaches 5 points.
-*/
-
-function playGame() {
-  buttons.forEach((button) => {
-    button.addEventListener("click", () => {
-      console.log(button.value);
-      switch (playRound(button.value, getComputerChoice())) {
-        case 1:
-          humanScore++;
-          if (updateScoreboard(humanScore, computerScore)) {
-            return;
-          }
-          break;
-
-        case -1:
-          computerScore++;
-          if (updateScoreboard(humanScore, computerScore)) {
-            return;
-          }
-          break;
-
-        case 0:
-          break;
-      }
-    });
-  });
-}
-
-playGame();
